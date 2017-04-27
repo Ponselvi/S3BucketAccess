@@ -1,0 +1,31 @@
+apply plugin: 'java'
+apply plugin : 'eclipse'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile (
+        'com.amazonaws:aws-lambda-java-core:1.1.0',
+        'com.amazonaws:aws-lambda-java-events:1.3.0',
+        'com.amazonaws:aws-java-sdk:1.11.116',
+        'com.fasterxml.jackson.core:jackson-annotations:1.8',
+   		'javax.xml:jaxb-impl:2.1',   
+    	'no.entitas.gradle.jaxb:gradle-jaxb-plugin:2.0',
+    	'com.github.fge:json-schema-validator:2.2.6', 
+    	'com.fasterxml.jackson.core:jackson-databind:2.0.1'
+        )
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'
+}
+
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources              
+    into('lib') {
+        from configurations.runtime
+    }           
+}
+
+build.dependsOn buildZip
